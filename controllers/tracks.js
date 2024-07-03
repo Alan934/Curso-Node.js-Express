@@ -43,7 +43,7 @@ const createItem = async (req, res)=>{
         const data = await tracksModel.create(body)
         res.send({data})
     } catch (error) {
-        handdleHttpError(res, "ERROR_CREATE_ITEMS");
+        handleHttpError(res, "ERROR_CREATE_ITEMS");
     }
 };
 /**
@@ -57,7 +57,7 @@ const updateItem = async (req, res)=>{
         const data = await tracksModel.findOneAndUpdate(id, body);
         res.send({data});
     } catch (error) {
-        handdleHttpError(res, "ERROR_UPDATE_ITEMS");
+        handleHttpError(res, "ERROR_UPDATE_ITEMS");
     }
 };
 /**
@@ -65,6 +65,15 @@ const updateItem = async (req, res)=>{
  * @param {*} req 
  * @param {*} res 
  */
-const deleteItem = async (req, res)=>{};
+const deleteItem = async (req, res)=>{
+    try {
+        req = matchedData(req);
+        const {id} = req;
+        const data = await tracksModel.delete({_id:id});
+        res.send({data});
+    } catch (error) {
+        handleHttpError(res, "ERROR_DELETE_ITEM");
+    }
+};
 
 module.exports = {getItems, getItem, createItem, updateItem, deleteItem};
